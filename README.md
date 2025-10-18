@@ -65,23 +65,6 @@ Smart Kisan is a web platform designed for farmers and landowners to connect and
    - Frontend: `http://localhost:3000`
    - Backend: `http://localhost:8000` (FastAPI) or `http://localhost:5000` (Flask)
 
-## Project Structure
-```
-smart-kisan/
-├── frontend/                # React frontend
-│   ├── src/
-│   │   ├── components/     # Reusable React components (Login, Signup, Dashboard)
-│   │   ├── pages/          # Page components (Home, CropYield, PesticideStore)
-│   │   ├── App.js          # Main React app
-│   │   └── index.js        # Entry point
-├── backend/                # Python backend
-│   ├── api/                # API routes (auth, land, farmer, pesticides)
-│   ├── models/             # MongoDB schemas
-│   ├── main.py             # FastAPI/Flask app
-│   └── requirements.txt    # Python dependencies
-└── README.md               # Project documentation
-```
-
 ## Usage
 1. **Signup/Login**:
    - Farmers: Register with personal details (name, age, Aadhaar, etc.).
