@@ -123,6 +123,7 @@ project/
    ```bash
    cd backend
    python main.py
+    python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000    
    ```
 
 2. **Database setup**
@@ -231,3 +232,4 @@ For support and questions:
 ---
 
 **Smart Kisan** - Revolutionizing agriculture through technology! 🌾✨
+
