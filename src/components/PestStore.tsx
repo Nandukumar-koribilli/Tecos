@@ -321,8 +321,8 @@ export const PestStore: React.FC = () => {
       {/* Cart Modal */}
       {showCart && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden">
-            <div className="flex items-center justify-between p-6 border-b">
+          <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="flex items-center justify-between p-6 border-b flex-shrink-0">
               <h2 className="text-2xl font-bold text-gray-900">Shopping Cart</h2>
               <button
                 onClick={() => setShowCart(false)}
@@ -332,173 +332,175 @@ export const PestStore: React.FC = () => {
               </button>
             </div>
 
-            <div className="p-6 max-h-96 overflow-y-auto">
-              {getCartItems().length === 0 ? (
-                <div className="text-center py-12">
-                  <ShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 text-lg">Your cart is empty</p>
-                  <p className="text-gray-400 text-sm">Add some products to get started</p>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {getCartItems().map((item) => (
-                    <div key={item!.id} className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Bug className="w-6 h-6 text-green-600" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-900 truncate">{item!.name}</h3>
-                        <p className="text-sm text-gray-500">{item!.category}</p>
-                        <p className="text-lg font-bold text-green-600">₹{item!.price}</p>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => removeFromCart(item!.id)}
-                          className="p-1 hover:bg-gray-100 rounded transition-colors"
-                        >
-                          <Minus className="w-4 h-4 text-gray-500" />
-                        </button>
-                        <span className="w-8 text-center font-medium">{item!.quantity}</span>
-                        <button
-                          onClick={() => addToCart(item!.id)}
-                          className="p-1 hover:bg-gray-100 rounded transition-colors"
-                        >
-                          <Plus className="w-4 h-4 text-gray-500" />
-                        </button>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-gray-900">₹{item!.price * item!.quantity}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {getCartItems().length > 0 && (
-              <div className="border-t p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-xl font-bold text-gray-900">Total:</span>
-                  <span className="text-2xl font-bold text-green-600">₹{getTotalPrice()}</span>
-                </div>
-                {!showCheckout ? (
-                  <button
-                    onClick={() => setShowCheckout(true)}
-                    className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors font-semibold text-lg"
-                  >
-                    Proceed to Checkout
-                  </button>
+            <div className="overflow-y-auto">
+              <div className="p-6">
+                {getCartItems().length === 0 ? (
+                  <div className="text-center py-12">
+                    <ShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                    <p className="text-gray-500 text-lg">Your cart is empty</p>
+                    <p className="text-gray-400 text-sm">Add some products to get started</p>
+                  </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="border-t pt-4">
-                      <h3 className="text-lg font-bold text-gray-900 mb-4">Shipping Address</h3>
-                      {checkoutError && (
-                        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-                          {checkoutError}
+                    {getCartItems().map((item) => (
+                      <div key={item!.id} className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
+                        <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Bug className="w-6 h-6 text-green-600" />
                         </div>
-                      )}
-                      <form className="space-y-4">
-                        <div className="grid grid-cols-1 gap-4">
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              <MapPin className="w-4 h-4 inline mr-1" />
-                              Street Address *
-                            </label>
-                            <input
-                              type="text"
-                              value={checkoutForm.street}
-                              onChange={(e) => setCheckoutForm(prev => ({ ...prev, street: e.target.value }))}
-                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                              placeholder="Enter your street address"
-                            />
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">City *</label>
-                              <input
-                                type="text"
-                                value={checkoutForm.city}
-                                onChange={(e) => setCheckoutForm(prev => ({ ...prev, city: e.target.value }))}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                placeholder="Enter city"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">State *</label>
-                              <input
-                                type="text"
-                                value={checkoutForm.state}
-                                onChange={(e) => setCheckoutForm(prev => ({ ...prev, state: e.target.value }))}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                placeholder="Enter state"
-                              />
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Pincode *</label>
-                              <input
-                                type="text"
-                                value={checkoutForm.pincode}
-                                onChange={(e) => setCheckoutForm(prev => ({ ...prev, pincode: e.target.value }))}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                placeholder="Enter 6-digit pincode"
-                                maxLength={6}
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
-                              <input
-                                type="tel"
-                                value={checkoutForm.phone}
-                                onChange={(e) => setCheckoutForm(prev => ({ ...prev, phone: e.target.value }))}
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                placeholder="Enter 10-digit number"
-                                maxLength={10}
-                              />
-                            </div>
-                          </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 truncate">{item!.name}</h3>
+                          <p className="text-sm text-gray-500">{item!.category}</p>
+                          <p className="text-lg font-bold text-green-600">₹{item!.price}</p>
                         </div>
-                      </form>
-                    </div>
-                    <div className="border-t pt-4">
-                      <h3 className="text-lg font-bold text-gray-900 mb-4">Payment Method</h3>
-                      <div className="bg-gray-50 p-4 rounded-lg mb-4">
-                        <div className="flex items-center">
-                          <input
-                            type="radio"
-                            checked={true}
-                            className="h-4 w-4 text-green-600"
-                            readOnly
-                          />
-                          <label className="ml-2 text-gray-700 flex items-center">
-                            <Truck className="w-4 h-4 mr-2" />
-                            Cash on Delivery (COD)
-                          </label>
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={() => removeFromCart(item!.id)}
+                            className="p-1 hover:bg-gray-100 rounded transition-colors"
+                          >
+                            <Minus className="w-4 h-4 text-gray-500" />
+                          </button>
+                          <span className="w-8 text-center font-medium">{item!.quantity}</span>
+                          <button
+                            onClick={() => addToCart(item!.id)}
+                            className="p-1 hover:bg-gray-100 rounded transition-colors"
+                          >
+                            <Plus className="w-4 h-4 text-gray-500" />
+                          </button>
                         </div>
-                        <p className="text-sm text-gray-500 mt-2 ml-6">
-                          Pay when your order is delivered
-                        </p>
+                        <div className="text-right">
+                          <p className="font-bold text-gray-900">₹{item!.price * item!.quantity}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex space-x-4">
-                      <button
-                        onClick={() => setShowCheckout(false)}
-                        className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
-                      >
-                        Back
-                      </button>
-                      <button
-                        onClick={handleCheckoutSubmit}
-                        className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors font-semibold"
-                      >
-                        Place Order
-                      </button>
-                    </div>
+                    ))}
                   </div>
                 )}
               </div>
-            )}
+
+              {getCartItems().length > 0 && (
+                <div className="border-t p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-xl font-bold text-gray-900">Total:</span>
+                    <span className="text-2xl font-bold text-green-600">₹{getTotalPrice()}</span>
+                  </div>
+                  {!showCheckout ? (
+                    <button
+                      onClick={() => setShowCheckout(true)}
+                      className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors font-semibold text-lg"
+                    >
+                      Proceed to Checkout
+                    </button>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="border-t pt-4">
+                        <h3 className="text-lg font-bold text-gray-900 mb-4">Shipping Address</h3>
+                        {checkoutError && (
+                          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                            {checkoutError}
+                          </div>
+                        )}
+                        <form className="space-y-4">
+                          <div className="grid grid-cols-1 gap-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <MapPin className="w-4 h-4 inline mr-1" />
+                                Street Address *
+                              </label>
+                              <input
+                                type="text"
+                                value={checkoutForm.street}
+                                onChange={(e) => setCheckoutForm(prev => ({ ...prev, street: e.target.value }))}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                placeholder="Enter your street address"
+                              />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">City *</label>
+                                <input
+                                  type="text"
+                                  value={checkoutForm.city}
+                                  onChange={(e) => setCheckoutForm(prev => ({ ...prev, city: e.target.value }))}
+                                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                  placeholder="Enter city"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">State *</label>
+                                <input
+                                  type="text"
+                                  value={checkoutForm.state}
+                                  onChange={(e) => setCheckoutForm(prev => ({ ...prev, state: e.target.value }))}
+                                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                  placeholder="Enter state"
+                                />
+                              </div>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Pincode *</label>
+                                <input
+                                  type="text"
+                                  value={checkoutForm.pincode}
+                                  onChange={(e) => setCheckoutForm(prev => ({ ...prev, pincode: e.target.value }))}
+                                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                  placeholder="Enter 6-digit pincode"
+                                  maxLength={6}
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                                <input
+                                  type="tel"
+                                  value={checkoutForm.phone}
+                                  onChange={(e) => setCheckoutForm(prev => ({ ...prev, phone: e.target.value }))}
+                                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                  placeholder="Enter 10-digit number"
+                                  maxLength={10}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                      <div className="border-t pt-4">
+                        <h3 className="text-lg font-bold text-gray-900 mb-4">Payment Method</h3>
+                        <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                          <div className="flex items-center">
+                            <input
+                              type="radio"
+                              checked={true}
+                              className="h-4 w-4 text-green-600"
+                              readOnly
+                            />
+                            <label className="ml-2 text-gray-700 flex items-center">
+                              <Truck className="w-4 h-4 mr-2" />
+                              Cash on Delivery (COD)
+                            </label>
+                          </div>
+                          <p className="text-sm text-gray-500 mt-2 ml-6">
+                            Pay when your order is delivered
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex space-x-4">
+                        <button
+                          onClick={() => setShowCheckout(false)}
+                          className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
+                        >
+                          Back
+                        </button>
+                        <button
+                          onClick={handleCheckoutSubmit}
+                          className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors font-semibold"
+                        >
+                          Place Order
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
