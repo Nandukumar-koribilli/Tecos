@@ -117,3 +117,4 @@ export const LoginPage: React.FC<LoginPageProps> = ({ role, onBack, onSwitchToSi
     </div>
   );
 };
+

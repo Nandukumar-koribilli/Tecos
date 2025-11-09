@@ -102,6 +102,7 @@ project/
 
 2. **Install dependencies**
    ```bash
+   Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
    npm install
    ```
 
@@ -120,10 +121,15 @@ project/
 ### **Backend Setup**
 
 1. **Start the Python backend**
+   
    ```bash
-   cd backend
-   python main.py
-    python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000    
+    cd backend
+    pip install fastapi "uvicorn[standard]" pymongo python-multipart
+
+   ```
+
+   ```bash
+    uvicorn main:app --reload --host 0.0.0.0 --port 8000
    ```
 
 2. **Database setup**
